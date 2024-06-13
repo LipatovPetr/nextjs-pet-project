@@ -8,9 +8,7 @@ const NavBar = () => {
       <Link href="/" className={s.logo}>
         Logo
       </Link>
-      <div>
-        <Links />
-      </div>
+      <Links />
     </div>
   );
 };
