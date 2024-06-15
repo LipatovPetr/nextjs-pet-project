@@ -10,7 +10,7 @@ const NavBar = async () => {
   return (
     <div className={s.container}>
       <Link href="/" className={s.logo}>
-        PetrDev
+        Logo
       </Link>
       <Links session={session} />
     </div>
