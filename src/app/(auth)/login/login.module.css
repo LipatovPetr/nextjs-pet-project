@@ -5,8 +5,17 @@
 }
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
   width: 500px;
   background-color: var(--bgSoft);
   padding: 50px;
   border-radius: 5px;
+  gap: 30px;
+}
+
+.github {
+  width: 100%;
+  padding: 20px;
+  cursor: pointer;
 }

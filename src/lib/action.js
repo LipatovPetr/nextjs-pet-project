@@ -42,7 +42,7 @@ export const handleLogout = async () => {
   await signOut();
 };
 
-export const register = async (formData) => {
+export const register = async (prevState, formData) => {
   const { username, email, image, password, passwordRepeat } =
     Object.fromEntries(formData);
 
@@ -68,18 +68,21 @@ export const register = async (formData) => {
     });
 
     await newUser.save();
-    console.log("A user saved to DB");
+    return { success: true };
   } catch (error) {
     console.log(error);
   }
 };
 
-export const login = async (formData) => {
+export const login = async (prevState, formData) => {
   const { username, password } = Object.fromEntries(formData);
 
   try {
     await signIn("credentials", { username, password });
   } catch (error) {
-    console.log(error);
+    if (error.message.includes("CredentialsSignin")) {
+      return { error: "Invalid username or password." };
+    }
+    throw error;
   }
 };
