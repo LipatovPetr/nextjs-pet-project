@@ -6,14 +6,10 @@ import { connectToDB } from "./utils";
 import { signIn, signOut } from "./auth";
 import bcrypt from "bcryptjs";
 
-export const addPost = async (formData) => {
-  //   const title = formData.get("title");
-  //   const desc = formData.get("desc");
-  //   const slug = formData.get("slug");
-  //   const userID = formData.get("userID");
-
+export const addPost = async (prevState, formData) => {
+  console.log(formData);
   const { title, desc, slug, userID } = Object.fromEntries(formData);
-
+  console.log(userID);
   try {
     connectToDB();
     const newPost = new Post({
@@ -25,10 +21,60 @@ export const addPost = async (formData) => {
 
     await newPost.save();
     revalidatePath("/blog");
+    revalidatePath("/admin");
     console.log(`"${title}" post saved to DB`);
   } catch (err) {
     console.log(err);
     return { error: "Failed to connect to DB." };
+  }
+};
+
+export const deletePost = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+  try {
+    connectToDB();
+    await Post.findByIdAndDelete(id);
+    console.log(`A post is deleted from DB`);
+    revalidatePath("/blog");
+    revalidatePath("/admin");
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong." };
+  }
+};
+
+export const addUser = async (prevState, formData) => {
+  const { username, email, password, image } = Object.fromEntries(formData);
+
+  try {
+    connectToDB();
+    const newUser = new User({
+      username,
+      email,
+      password,
+      image,
+    });
+
+    await newUser.save();
+    revalidatePath("/admin");
+    console.log(`"A user saved to DB`);
+  } catch (err) {
+    console.log(err);
+    return { error: "Failed to connect to DB." };
+  }
+};
+
+export const deleteUser = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+  try {
+    connectToDB();
+    await Post.deleteMany({ userID: id });
+    await User.findByIdAndDelete(id);
+    console.log(`A user is deleted from DB`);
+    revalidatePath("/admin");
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong." };
   }
 };
 
