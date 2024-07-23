@@ -8,8 +8,8 @@ export const metadata = {
 };
 
 const getData = async () => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const res = await fetch(`${apiUrl}/api/blog`);
+  // const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const res = await fetch(`/api/blog`);
 
   if (!res.ok) throw new Error("Something went wrong");
 
